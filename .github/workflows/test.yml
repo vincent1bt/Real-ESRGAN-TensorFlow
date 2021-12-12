@@ -7,7 +7,7 @@ on:
     branches:
       - main
 jobs:
-  Test Workflow:
+  Test-Workflow:
     runs-on: ubuntu-latest
     strategy:
       matrix:
