@@ -1,7 +1,5 @@
 import tensorflow as tf
 import random
-from glob import glob
-import os
 
 from data_generator.data_utils import kernel_props_1, kernel_props_2, final_sinc_prob
 from data_generator.data_utils import generate_sinc_kernel, generate_kernel
@@ -77,15 +75,6 @@ def load_train_image(final_sinc_prob, kernel_props_1, kernel_props_2):
   return load_image_kernels
 
 load_function = load_train_image(final_sinc_prob, kernel_props_1, kernel_props_2)
-
-data_path = os.path.abspath("./data/train_images/*.png")
-train_images_paths = sorted(glob(data_path))
-
-train_dataset = tf.data.Dataset.from_tensor_slices((train_images_paths))
-train_dataset = train_dataset.shuffle(len(train_images_paths))
-train_dataset = train_dataset.map(load_function, num_parallel_calls=tf.data.experimental.AUTOTUNE)
-
-
 
 feed_props_1 = {
   "resize_prob": [0.2, 0.7, 0.1],

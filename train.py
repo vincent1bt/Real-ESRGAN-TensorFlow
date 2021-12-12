@@ -1,11 +1,12 @@
 import tensorflow as tf
 import time
 import os
+from glob import glob
 from train_utils import no_gan_inner_step, AverageModelWeights
 
 from networks.models import RRDBNet
-from data_generator.data_generator import train_dataset, feed_data, PoolData
-from data_generator.data_generator import feed_props_1, feed_props_2, train_images_paths
+from data_generator.data_generator import load_function, feed_data, PoolData
+from data_generator.data_generator import feed_props_1, feed_props_2
 from data_generator.data_generator import usm_sharpener
 
 import argparse
@@ -45,11 +46,16 @@ ema_no_gan_model.build((None, 256, 256, 3))
 # will change to the model saved in the checkpoints
 ema_api = AverageModelWeights(ema_no_gan_model, no_gan_model.get_weights())
 
+
+data_path = os.path.abspath("./data/train_images/*.png")
+train_images_paths = sorted(glob(data_path))
+
+train_dataset = tf.data.Dataset.from_tensor_slices((train_images_paths))
+train_dataset = train_dataset.shuffle(len(train_images_paths))
+train_dataset = train_dataset.map(load_function, num_parallel_calls=tf.data.experimental.AUTOTUNE)
 train_generator = train_dataset.batch(batch_size)
 
 pool_train_data = PoolData(pool_size, batch_size)
-
-
 
 checkpoint_dir = './training_checkpoints'
 ema_checkpoint_dir = './ema_training_checkpoints'
