@@ -22,7 +22,7 @@ if opts.use_ema_model:
 else:
     model = tf.keras.models.load_model('models/gan_model')
 
-data_path = os.path.abspath("./data/test_shots/*.png")
+data_path = os.path.abspath("./data/user_images/*.png")
 test_images_paths = sorted(glob(data_path))
 
 test_dataset = tf.data.Dataset.from_tensor_slices((test_images_paths))

@@ -78,7 +78,7 @@ def load_train_image(final_sinc_prob, kernel_props_1, kernel_props_2):
 
 load_function = load_train_image(final_sinc_prob, kernel_props_1, kernel_props_2)
 
-data_path = os.path.abspath("./data/final_shots/*.png")
+data_path = os.path.abspath("./data/train_images/*.png")
 train_images_paths = sorted(glob(data_path))
 
 train_dataset = tf.data.Dataset.from_tensor_slices((train_images_paths))

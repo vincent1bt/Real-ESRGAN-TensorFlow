@@ -18,10 +18,10 @@ Once you have installed the dependencies:
 requirements.txt
 ```
 
-And downloaded or created some dataset, you need to put your images inside the *data/final_shots* folder or change the following code:
+And downloaded or created some dataset, you need to put your images inside the *data/train_images* folder or change the following code:
 
 ```
-data_path = os.path.abspath("./data/final_shots/*.png")
+data_path = os.path.abspath("./data/train_images/*.png")
 ```
 
 To train the model in one step run:
@@ -64,13 +64,13 @@ The default batch size is 14 which works well with GPU's with 16gb of VRAM.
 
 ## Use model
 
-put your images inside the *data/test_shots* folder and run:
+put your images inside the *data/user_images* folder and run:
 
 ```
 python use_model.py --use_ema_model --batch_size=1
 ```
 
-adjust the batch size according to the number of images inside the *data/test_shots* folder.
+adjust the batch size according to the number of images inside the *data/user_images* folder.
 
 For a 16gb GPU you should use images of a medium size, around 750x500 or below. If you want to use a larger batch size you need smaller images, around 500x500 or below.
 

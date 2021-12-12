@@ -1,10 +1,13 @@
-from data_generator.data_generator import train_dataset, feed_data, PoolData
-from data_generator.data_generator import feed_props_1, feed_props_2
+import tensorflow as tf
+from glob import glob
 
 import os
 import logging
 import unittest
 import builtins
+
+from data_generator.data_generator import feed_data, PoolData
+from data_generator.data_generator import feed_props_1, feed_props_2, load_function
 
 using_notebook = getattr(builtins, "__IPYTHON__", False)
 
@@ -22,7 +25,13 @@ test_pool_size = test_batch_size * 2
 
 class TestDataGenerator(unittest.TestCase):
   def setUp(self):
-    test_generator = train_dataset.batch(test_batch_size)
+    data_path = os.path.abspath("./data/test_images/*.png")
+    test_images_paths = sorted(glob(data_path))
+
+    test_dataset = tf.data.Dataset.from_tensor_slices((test_images_paths))
+    test_dataset = test_dataset.map(load_function, num_parallel_calls=tf.data.experimental.AUTOTUNE)
+
+    test_generator = test_dataset.batch(test_batch_size)
     self.pool_test_data = PoolData(test_pool_size, test_batch_size)
 
     iterator = iter(test_generator)
