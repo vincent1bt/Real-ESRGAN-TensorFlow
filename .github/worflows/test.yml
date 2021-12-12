@@ -1,0 +1,26 @@
+name: Test TensorFlow Code
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  Test Workflow:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8']
+    steps:
+      - name: checkout repository
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Test Generator
+        run: python -m unittest -v test/test_data_generator.py
+      - name: Test Loss Functions
+        run: python -m unittest -v test/test_loss.py
+      - name: Test Models
+        run: python -m unittest -v test/test_model.py
